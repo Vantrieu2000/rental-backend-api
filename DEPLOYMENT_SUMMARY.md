@@ -17,9 +17,9 @@
 ## 📋 Thông tin Server
 
 ```
-IP: 158.178.236.169
+IP: YOUR_SERVER_IP
 User: ubuntu
-Password: Admin@02122000
+Password: YOUR_PASSWORD
 RAM: 1GB + 2GB Swap
 OS: Ubuntu (Oracle Cloud Free Tier)
 ```
@@ -30,7 +30,7 @@ OS: Ubuntu (Oracle Cloud Free Tier)
 
 ```bash
 # 1. SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # 2. Download và chạy script
 curl -o deploy.sh https://raw.githubusercontent.com/Vantrieu2000/rental-backend-api/main/deploy.sh
@@ -80,9 +80,9 @@ free -h
 ## 🌐 API Endpoints
 
 Sau khi deploy:
-- **Base URL**: http://158.178.236.169:3000
-- **Swagger Docs**: http://158.178.236.169:3000/api/docs
-- **Health Check**: http://158.178.236.169:3000
+- **Base URL**: http://YOUR_SERVER_IP:3000
+- **Swagger Docs**: http://YOUR_SERVER_IP:3000/api/docs
+- **Health Check**: http://YOUR_SERVER_IP:3000
 
 ## ⚙️ Tối ưu hóa cho Low Memory
 

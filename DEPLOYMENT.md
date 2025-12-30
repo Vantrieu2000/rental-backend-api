@@ -1,9 +1,9 @@
 # Deployment Guide - Oracle Cloud Free Tier (1GB RAM)
 
 ## Server Information
-- **IP**: 158.178.236.169
+- **IP**: YOUR_SERVER_IP
 - **User**: ubuntu
-- **Password**: Admin@02122000
+- **Password**: YOUR_PASSWORD
 - **RAM**: 1GB + 2GB Swap
 - **OS**: Ubuntu
 
@@ -18,8 +18,8 @@
 
 1. **SSH into server:**
 ```bash
-ssh ubuntu@158.178.236.169
-# Password: Admin@02122000
+ssh ubuntu@YOUR_SERVER_IP
+# Enter your password
 ```
 
 2. **Download and run deployment script:**
@@ -54,7 +54,7 @@ pm2 restart rental-api
 
 1. **SSH into server:**
 ```bash
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 ```
 
 2. **Install Node.js:**
@@ -155,7 +155,7 @@ Add:
 ```nginx
 server {
     listen 80;
-    server_name 158.178.236.169;
+    server_name YOUR_SERVER_IP;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -261,9 +261,9 @@ curl http://158.178.236.169:3000
 ## API Endpoints
 
 Once deployed, access:
-- **API Base**: http://158.178.236.169:3000
-- **Swagger Docs**: http://158.178.236.169:3000/api/docs
-- **Health Check**: http://158.178.236.169:3000
+- **API Base**: http://YOUR_SERVER_IP:3000
+- **Swagger Docs**: http://YOUR_SERVER_IP:3000/api/docs
+- **Health Check**: http://YOUR_SERVER_IP:3000
 
 ## Security Recommendations
 

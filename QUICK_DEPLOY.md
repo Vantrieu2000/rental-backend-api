@@ -4,8 +4,8 @@
 
 ### Bước 1: SSH vào server
 ```bash
-ssh ubuntu@158.178.236.169
-# Password: Admin@02122000
+ssh ubuntu@YOUR_SERVER_IP
+# Enter your password
 ```
 
 ### Bước 2: Chạy lệnh deploy tự động
@@ -49,10 +49,10 @@ pm2 logs rental-api --lines 50
 Mở trình duyệt hoặc dùng curl:
 ```bash
 # Health check
-curl http://158.178.236.169:3000
+curl http://YOUR_SERVER_IP:3000
 
 # Swagger docs
-http://158.178.236.169:3000/api/docs
+http://YOUR_SERVER_IP:3000/api/docs
 ```
 
 ## 📊 Các lệnh hữu ích

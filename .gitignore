@@ -38,3 +38,8 @@ lerna-debug.log*
 .env
 .env.local
 .env.*.local
+
+# Local deployment files (DO NOT COMMIT)
+.env.production.local
+deploy-local.sh
+SERVER_INFO.txt

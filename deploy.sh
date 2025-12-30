@@ -78,8 +78,8 @@ echo -e "${YELLOW}📦 Step 4: Installing dependencies (this may take a while)..
 # Clear npm cache to save space
 npm cache clean --force
 
-# Install production dependencies only
-npm ci --only=production --no-audit --prefer-offline
+# Install ALL dependencies (including dev dependencies for build)
+npm ci --no-audit --prefer-offline
 
 echo -e "${GREEN}✅ Dependencies installed${NC}"
 
@@ -87,6 +87,12 @@ echo -e "${YELLOW}🔨 Step 5: Building application...${NC}"
 
 # Build the application
 npm run build
+
+# Remove dev dependencies after build to save space
+echo -e "${YELLOW}🧹 Removing dev dependencies to save space...${NC}"
+npm prune --production
+
+echo -e "${GREEN}✅ Build complete and dev dependencies removed${NC}"
 
 # Remove source files to save space (optional)
 # rm -rf src test

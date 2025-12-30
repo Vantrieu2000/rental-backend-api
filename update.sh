@@ -15,11 +15,15 @@ git pull origin main
 
 # Install any new dependencies
 echo "📦 Installing dependencies..."
-npm ci --only=production --no-audit --prefer-offline
+npm ci --no-audit --prefer-offline
 
 # Build application
 echo "🔨 Building application..."
 npm run build
+
+# Remove dev dependencies to save space
+echo "🧹 Removing dev dependencies..."
+npm prune --production
 
 # Restart PM2
 echo "🔄 Restarting application..."

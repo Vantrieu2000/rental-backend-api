@@ -5,10 +5,10 @@
 ### Bước 1: Mở PowerShell hoặc CMD và chạy:
 
 ```powershell
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 ```
 
-Nhập password: `Admin@02122000`
+Nhập password của bạn
 
 ### Bước 2: Sau khi đã SSH vào server, chạy các lệnh sau:
 
@@ -71,19 +71,19 @@ pm2 logs rental-api --lines 50
 ## Kiểm tra API
 
 Mở trình duyệt:
-- **API**: http://158.178.236.169:3000
-- **Swagger Docs**: http://158.178.236.169:3000/api/docs
+- **API**: http://YOUR_SERVER_IP:3000
+- **Swagger Docs**: http://YOUR_SERVER_IP:3000/api/docs
 
 Hoặc dùng curl:
 ```bash
-curl http://158.178.236.169:3000
+curl http://YOUR_SERVER_IP:3000
 ```
 
 ## Cách 2: Thủ công (Nếu script không chạy)
 
 ```bash
 # 1. SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # 2. Cài Node.js
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -181,8 +181,8 @@ pm2 logs rental-api --lines 100
 ## 🎉 Hoàn tất!
 
 Sau khi deploy xong, API sẽ chạy tại:
-- http://158.178.236.169:3000
-- http://158.178.236.169:3000/api/docs (Swagger)
+- http://YOUR_SERVER_IP:3000
+- http://YOUR_SERVER_IP:3000/api/docs (Swagger)
 
 PM2 sẽ tự động:
 - ✅ Restart nếu app crash

@@ -14,7 +14,7 @@ Khi bạn:
 
 ```bash
 # SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # Chạy script update
 cd /home/ubuntu/rental-backend-api
@@ -36,7 +36,7 @@ Script sẽ tự động:
 
 ```bash
 # SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # Chạy script deploy
 cd /home/ubuntu/rental-backend-api
@@ -55,7 +55,7 @@ Script này sẽ làm mọi thứ từ đầu (cài Node.js, PM2, dependencies..
 
 ```bash
 # SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # Vào thư mục project
 cd /home/ubuntu/rental-backend-api
@@ -85,7 +85,7 @@ Nếu chưa deploy lần nào:
 
 ```bash
 # SSH vào server
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 
 # Download và chạy deploy script
 curl -o deploy.sh https://raw.githubusercontent.com/Vantrieu2000/rental-backend-api/main/deploy.sh
@@ -158,10 +158,10 @@ pm2 logs rental-api --lines 100
 ## 📊 Workflow thông thường
 
 1. **Sửa code trên máy local** → Commit → Push lên GitHub
-2. **SSH vào server:** `ssh ubuntu@158.178.236.169`
+2. **SSH vào server:** `ssh ubuntu@YOUR_SERVER_IP`
 3. **Chạy update:** `cd /home/ubuntu/rental-backend-api && ./update.sh`
 4. **Kiểm tra:** `pm2 logs rental-api`
-5. **Test API:** Mở browser http://158.178.236.169:3000/api/docs
+5. **Test API:** Mở browser http://YOUR_SERVER_IP:3000/api/docs
 
 ---
 
@@ -204,21 +204,21 @@ pm2 monit
 
 **Update thường xuyên (code mới):**
 ```bash
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 cd /home/ubuntu/rental-backend-api
 ./update.sh
 ```
 
 **Deploy lần đầu hoặc cài lại:**
 ```bash
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 cd /home/ubuntu/rental-backend-api
 ./deploy.sh
 ```
 
 **Restart nhanh:**
 ```bash
-ssh ubuntu@158.178.236.169
+ssh ubuntu@YOUR_SERVER_IP
 pm2 restart rental-api
 ```
 

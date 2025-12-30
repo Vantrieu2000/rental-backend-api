@@ -255,7 +255,7 @@ sudo ufw status
 curl http://localhost:3000
 
 # Check from outside
-curl http://158.178.236.169:3000
+curl http://YOUR_SERVER_IP:3000
 ```
 
 ## API Endpoints

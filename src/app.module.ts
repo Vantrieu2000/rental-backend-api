@@ -13,6 +13,7 @@ import { TenantsModule } from './modules/tenants/tenants.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { RemindersModule } from './modules/reminders/reminders.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { TenantPortalModule } from './modules/tenant-portal/tenant-portal.module';
 import { SanitizationMiddleware } from './common/middleware/sanitization.middleware';
 
 @Module({
@@ -59,6 +60,7 @@ import { SanitizationMiddleware } from './common/middleware/sanitization.middlew
     PaymentsModule,
     RemindersModule,
     NotificationsModule,
+    TenantPortalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -21,6 +21,7 @@ import {
   RoomFiltersDto,
   AssignTenantDto,
   VacateRoomDto,
+  RoomsResponseDto,
 } from './dto';
 import { Room } from './schemas/room.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -51,17 +52,17 @@ export class RoomsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all rooms' })
+  @ApiOperation({ summary: 'Get all rooms with pagination' })
   @ApiResponse({
     status: 200,
     description: 'Rooms retrieved successfully',
-    type: [Room],
+    type: RoomsResponseDto,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async findAll(
     @Query() filters: RoomFiltersDto,
     @CurrentUser() user: UserPayload,
-  ): Promise<Room[]> {
+  ): Promise<RoomsResponseDto> {
     return this.roomsService.findAll(filters, user.userId);
   }
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsMongoId, IsEnum, IsNumber, Min } from 'class-validator';
+import { IsOptional, IsMongoId, IsEnum, IsNumber, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class RoomFiltersDto {
@@ -44,4 +44,29 @@ export class RoomFiltersDto {
   @Min(0)
   @Type(() => Number)
   maxPrice?: number;
+
+  @ApiProperty({
+    description: 'Page number (starts from 1)',
+    required: false,
+    default: 1,
+    example: 1,
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  @Type(() => Number)
+  page?: number = 1;
+
+  @ApiProperty({
+    description: 'Number of items per page',
+    required: false,
+    default: 20,
+    example: 20,
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  @Type(() => Number)
+  limit?: number = 20;
 }

@@ -35,9 +35,12 @@ export class RoomsService {
   }
 
   /**
-   * Find all rooms with filters
+   * Find all rooms with filters and pagination
    */
-  async findAll(filters: RoomFiltersDto, userId: string): Promise<Room[]> {
+  async findAll(
+    filters: RoomFiltersDto,
+    userId: string,
+  ): Promise<{ data: Room[]; total: number; page: number; limit: number }> {
     const query: any = {};
 
     // If propertyId filter is provided, verify ownership
@@ -67,7 +70,28 @@ export class RoomsService {
       }
     }
 
-    return this.roomModel.find(query).populate('currentTenantId').exec();
+    // Pagination
+    const page = filters.page || 1;
+    const limit = filters.limit || 20;
+    const skip = (page - 1) * limit;
+
+    // Execute query with pagination
+    const [data, total] = await Promise.all([
+      this.roomModel
+        .find(query)
+        .populate('currentTenantId')
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      this.roomModel.countDocuments(query).exec(),
+    ]);
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 
   /**

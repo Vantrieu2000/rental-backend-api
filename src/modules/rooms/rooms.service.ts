@@ -15,6 +15,7 @@ import {
   AssignTenantDto,
   VacateRoomDto,
 } from './dto';
+import { UpdateTenantDto } from './dto/update-tenant.dto';
 
 @Injectable()
 export class RoomsService {
@@ -198,6 +199,93 @@ export class RoomsService {
         {
           $set: { status: 'vacant' },
           $unset: { currentTenantId: 1 },
+        },
+        { new: true },
+      )
+      .exec();
+
+    if (!updatedRoom) {
+      throw new NotFoundException(`Room with ID ${id} not found`);
+    }
+
+    return updatedRoom;
+  }
+
+  /**
+   * Update current tenant info (embedded in room)
+   * If all fields are null/empty, it will remove the tenant
+   */
+  async updateTenantInfo(
+    id: string,
+    updateTenantDto: UpdateTenantDto,
+    userId: string,
+  ): Promise<Room> {
+    // Verify ownership first
+    await this.findOne(id, userId);
+
+    // Check if all fields are empty (means remove tenant)
+    const isEmpty = !updateTenantDto.name && !updateTenantDto.phone && !updateTenantDto.moveInDate;
+
+    let updatedRoom: Room | null;
+
+    if (isEmpty) {
+      // Remove tenant and set status to vacant
+      updatedRoom = await this.roomModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $set: { status: 'vacant' },
+            $unset: { currentTenant: 1 },
+          },
+          { new: true },
+        )
+        .exec();
+    } else {
+      // Update tenant info and set status to occupied
+      updatedRoom = await this.roomModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              status: 'occupied',
+              currentTenant: {
+                name: updateTenantDto.name,
+                phone: updateTenantDto.phone,
+                moveInDate: updateTenantDto.moveInDate,
+              },
+            },
+          },
+          { new: true },
+        )
+        .exec();
+    }
+
+    if (!updatedRoom) {
+      throw new NotFoundException(`Room with ID ${id} not found`);
+    }
+
+    return updatedRoom;
+  }
+
+  /**
+   * Remove current tenant from room
+   */
+  async removeTenant(id: string, userId: string): Promise<Room> {
+    // Verify ownership first
+    const room = await this.findOne(id, userId);
+
+    // Check if room has a tenant
+    if (!room.currentTenant) {
+      throw new BadRequestException('Room does not have a tenant');
+    }
+
+    // Remove tenant and set status to vacant
+    const updatedRoom = await this.roomModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { status: 'vacant' },
+          $unset: { currentTenant: 1 },
         },
         { new: true },
       )

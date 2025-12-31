@@ -3,6 +3,18 @@ import { Document, Types } from 'mongoose';
 
 export type RoomDocument = Room & Document;
 
+// Embedded current tenant info (not a reference)
+export class CurrentTenant {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  phone: string;
+
+  @Prop({ required: true })
+  moveInDate: Date;
+}
+
 @Schema({ timestamps: true })
 export class Room {
   @Prop({ type: Types.ObjectId, ref: 'Property', required: true })
@@ -36,6 +48,11 @@ export class Room {
   @Prop({ required: true, min: 0 })
   parkingFee: number;
 
+  // Current tenant info (embedded, not reference)
+  @Prop({ type: CurrentTenant, default: null })
+  currentTenant?: CurrentTenant;
+
+  // Legacy field - keep for backward compatibility
   @Prop({ type: Types.ObjectId, ref: 'Tenant' })
   currentTenantId?: Types.ObjectId;
 }

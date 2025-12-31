@@ -5,6 +5,7 @@ import {
   Body,
   Patch,
   Param,
+  Delete,
   UseGuards,
   Query,
 } from '@nestjs/common';
@@ -23,6 +24,7 @@ import {
   VacateRoomDto,
   RoomsResponseDto,
 } from './dto';
+import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Room } from './schemas/room.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -137,5 +139,44 @@ export class RoomsController {
     @CurrentUser() user: UserPayload,
   ): Promise<Room> {
     return this.roomsService.vacateRoom(id, vacateRoomDto, user.userId);
+  }
+
+  @Patch(':id/tenant')
+  @ApiOperation({ 
+    summary: 'Update current tenant info', 
+    description: 'Update tenant information directly in room. Pass empty/null values to remove tenant.' 
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Tenant info updated successfully',
+    type: Room,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Room not found' })
+  async updateTenant(
+    @Param('id') id: string,
+    @Body() updateTenantDto: UpdateTenantDto,
+    @CurrentUser() user: UserPayload,
+  ): Promise<Room> {
+    return this.roomsService.updateTenantInfo(id, updateTenantDto, user.userId);
+  }
+
+  @Delete(':id/tenant')
+  @ApiOperation({ summary: 'Remove current tenant from room' })
+  @ApiResponse({
+    status: 200,
+    description: 'Tenant removed successfully',
+    type: Room,
+  })
+  @ApiResponse({ status: 400, description: 'Room does not have a tenant' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Room not found' })
+  async removeTenant(
+    @Param('id') id: string,
+    @CurrentUser() user: UserPayload,
+  ): Promise<Room> {
+    return this.roomsService.removeTenant(id, user.userId);
   }
 }

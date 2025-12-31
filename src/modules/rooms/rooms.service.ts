@@ -224,7 +224,7 @@ export class RoomsService {
     await this.findOne(id, userId);
 
     // Check if all fields are empty (means remove tenant)
-    const isEmpty = !updateTenantDto.name && !updateTenantDto.phone && !updateTenantDto.moveInDate && !updateTenantDto.paymentDueDate;
+    const isEmpty = !updateTenantDto.name && !updateTenantDto.phone && !updateTenantDto.moveInDate && !updateTenantDto.paymentDueDay;
 
     let updatedRoom: Room | null;
 
@@ -252,7 +252,7 @@ export class RoomsService {
                 name: updateTenantDto.name,
                 phone: updateTenantDto.phone,
                 moveInDate: updateTenantDto.moveInDate,
-                paymentDueDate: updateTenantDto.paymentDueDate,
+                paymentDueDay: updateTenantDto.paymentDueDay,
               },
             },
           },

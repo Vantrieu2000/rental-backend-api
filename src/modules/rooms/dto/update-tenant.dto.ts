@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDateString, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString, IsOptional, IsInt, Min, Max } from 'class-validator';
 
 export class UpdateTenantDto {
   @ApiProperty({
@@ -30,11 +30,15 @@ export class UpdateTenantDto {
   moveInDate?: string;
 
   @ApiProperty({
-    description: 'Payment due date (ISO 8601 format)',
-    example: '2024-02-05',
+    description: 'Payment due day of month (1-31)',
+    example: 5,
     required: false,
+    minimum: 1,
+    maximum: 31,
   })
-  @IsDateString()
+  @IsInt()
+  @Min(1)
+  @Max(31)
   @IsOptional()
-  paymentDueDate?: string;
+  paymentDueDay?: number;
 }

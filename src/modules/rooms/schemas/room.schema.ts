@@ -14,8 +14,8 @@ export class CurrentTenant {
   @Prop({ required: true })
   moveInDate: Date;
 
-  @Prop({ required: true })
-  paymentDueDate: Date;
+  @Prop({ required: true, min: 1, max: 31 })
+  paymentDueDay: number; // Day of month (1-31)
 }
 
 @Schema({ timestamps: true })

@@ -66,8 +66,8 @@ export class TenantsService {
       query.roomId = filters.roomId;
     } else {
       // Get all rooms owned by user
-      const rooms = await this.roomsService.findAll({}, userId);
-      const roomIds = rooms.map((r: any) => r._id);
+      const roomsResponse = await this.roomsService.findAll({}, userId);
+      const roomIds = roomsResponse.data.map((r: any) => r._id);
       query.roomId = { $in: roomIds };
     }
 

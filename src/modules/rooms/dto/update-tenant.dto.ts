@@ -28,4 +28,13 @@ export class UpdateTenantDto {
   @IsDateString()
   @IsOptional()
   moveInDate?: string;
+
+  @ApiProperty({
+    description: 'Payment due date (ISO 8601 format)',
+    example: '2024-02-05',
+    required: false,
+  })
+  @IsDateString()
+  @IsOptional()
+  paymentDueDate?: string;
 }

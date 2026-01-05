@@ -23,6 +23,7 @@ import {
   FeeCalculationResponseDto,
   PaymentStatisticsDto,
 } from './dto';
+import { RecordUsageDto } from './dto/record-usage.dto';
 import { Payment } from './schemas/payment.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -52,7 +53,7 @@ export class PaymentsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all payments' })
+  @ApiOperation({ summary: 'Get all payments with filters' })
   @ApiResponse({
     status: 200,
     description: 'Payments retrieved successfully',
@@ -63,7 +64,7 @@ export class PaymentsController {
     @Query() filters: PaymentFiltersDto,
     @CurrentUser() user: UserPayload,
   ): Promise<Payment[]> {
-    return this.paymentsService.findAll(filters, user.userId);
+    return this.paymentsService.findAllWithFilters(filters, user.userId);
   }
 
   @Get('overdue')
@@ -170,5 +171,58 @@ export class PaymentsController {
     @CurrentUser() user: UserPayload,
   ): Promise<FeeCalculationResponseDto> {
     return this.paymentsService.calculateFees(feeCalculationDto, user.userId);
+  }
+
+  @Post('usage')
+  @ApiOperation({ summary: 'Record utility usage for a room' })
+  @ApiResponse({
+    status: 201,
+    description: 'Usage recorded successfully',
+    type: Payment,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request - Invalid usage data or vacant room' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Room not found' })
+  async recordUsage(
+    @Body() recordUsageDto: RecordUsageDto,
+    @Query('roomId') roomId: string,
+    @CurrentUser() user: UserPayload,
+  ): Promise<Payment> {
+    return this.paymentsService.recordUsage(roomId, recordUsageDto, user.userId);
+  }
+
+  @Get('history/:roomId')
+  @ApiOperation({ summary: 'Get payment history for a room with usage details' })
+  @ApiResponse({
+    status: 200,
+    description: 'Payment history retrieved successfully',
+    type: [Payment],
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Room not found' })
+  async getHistory(
+    @Param('roomId') roomId: string,
+    @Query('limit') limit?: number,
+    @CurrentUser() user?: UserPayload,
+  ): Promise<Payment[]> {
+    return this.paymentsService.getPaymentHistory(roomId, user!.userId, limit);
+  }
+
+  @Put(':id/usage')
+  @ApiOperation({ summary: 'Update utility usage for an existing payment' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usage updated successfully',
+    type: Payment,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request - Cannot edit paid bills' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Payment not found' })
+  async updateUsage(
+    @Param('id') id: string,
+    @Body() recordUsageDto: RecordUsageDto,
+    @CurrentUser() user: UserPayload,
+  ): Promise<Payment> {
+    return this.paymentsService.updateUsage(id, recordUsageDto, user.userId);
   }
 }

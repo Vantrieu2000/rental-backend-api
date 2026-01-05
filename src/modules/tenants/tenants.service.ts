@@ -2,6 +2,8 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -25,6 +27,7 @@ export class TenantsService {
     @InjectModel(Tenant.name) private tenantModel: Model<TenantDocument>,
     @InjectModel(TenantHistory.name)
     private tenantHistoryModel: Model<TenantHistoryDocument>,
+    @Inject(forwardRef(() => RoomsService))
     private roomsService: RoomsService,
   ) {}
 

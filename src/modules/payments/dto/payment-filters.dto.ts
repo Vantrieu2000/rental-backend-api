@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
   IsMongoId,
-  IsEnum,
+  IsString,
   IsDateString,
   IsInt,
   Min,
@@ -30,14 +30,13 @@ export class PaymentFiltersDto {
   roomId?: string;
 
   @ApiProperty({
-    description: 'Filter by status',
+    description: 'Filter by status (comma-separated for multiple values)',
     enum: ['unpaid', 'partial', 'paid', 'overdue'],
     required: false,
+    example: 'unpaid,overdue',
   })
   @IsOptional()
-  @IsEnum(['unpaid', 'partial', 'paid', 'overdue'], {
-    message: 'Status must be one of: unpaid, partial, paid, overdue',
-  })
+  @IsString()
   status?: string;
 
   @ApiProperty({

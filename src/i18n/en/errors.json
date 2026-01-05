@@ -1,0 +1,16 @@
+{
+  "validation": {
+    "invalidInput": "Invalid input provided",
+    "requiredField": "{{field}} is required",
+    "invalidFormat": "{{field}} has invalid format"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid credentials",
+    "tokenExpired": "Token has expired",
+    "unauthorized": "You are not authorized to access this resource"
+  },
+  "database": {
+    "connectionError": "Database connection error",
+    "queryError": "Database query failed"
+  }
+}

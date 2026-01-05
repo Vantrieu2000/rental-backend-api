@@ -23,6 +23,7 @@ import {
   AssignTenantDto,
   VacateRoomDto,
   RoomsResponseDto,
+  UpdatePaymentStatusDto,
 } from './dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
 import { Room } from './schemas/room.schema';
@@ -54,10 +55,10 @@ export class RoomsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all rooms with pagination' })
+  @ApiOperation({ summary: 'Get all rooms with pagination and payment status' })
   @ApiResponse({
     status: 200,
-    description: 'Rooms retrieved successfully',
+    description: 'Rooms retrieved successfully with payment status',
     type: RoomsResponseDto,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -65,7 +66,7 @@ export class RoomsController {
     @Query() filters: RoomFiltersDto,
     @CurrentUser() user: UserPayload,
   ): Promise<RoomsResponseDto> {
-    return this.roomsService.findAll(filters, user.userId);
+    return this.roomsService.findAllWithPaymentStatus(filters, user.userId);
   }
 
   @Get(':id')
@@ -178,5 +179,44 @@ export class RoomsController {
     @CurrentUser() user: UserPayload,
   ): Promise<Room> {
     return this.roomsService.removeTenant(id, user.userId);
+  }
+
+  @Patch(':id/payment-status')
+  @ApiOperation({ summary: 'Update payment status for a room' })
+  @ApiResponse({
+    status: 200,
+    description: 'Payment status updated successfully',
+    type: Room,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - Room not occupied or no payment record' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Room not found' })
+  async updatePaymentStatus(
+    @Param('id') id: string,
+    @Body() updatePaymentStatusDto: UpdatePaymentStatusDto,
+    @CurrentUser() user: UserPayload,
+  ): Promise<{ success: boolean; message: string; room: any }> {
+    const room = await this.roomsService.updatePaymentStatus(
+      id,
+      updatePaymentStatusDto.status,
+      {
+        paymentMethod: updatePaymentStatusDto.paymentMethod,
+        notes: updatePaymentStatusDto.notes,
+      },
+      user.userId,
+    );
+
+    // Get updated payment status
+    const paymentStatus = await this.roomsService.calculatePaymentStatus(id);
+
+    return {
+      success: true,
+      message: 'Payment status updated successfully',
+      room: {
+        id: (room as any)._id.toString(),
+        paymentStatus,
+      },
+    };
   }
 }

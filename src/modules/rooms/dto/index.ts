@@ -4,3 +4,6 @@ export * from './room-filters.dto';
 export * from './assign-tenant.dto';
 export * from './vacate-room.dto';
 export * from './rooms-response.dto';
+export * from './update-payment-status.dto';
+export * from './payment-status-info.interface';
+export * from './update-payment-status-options.interface';

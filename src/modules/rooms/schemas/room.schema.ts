@@ -51,6 +51,12 @@ export class Room {
   @Prop({ required: true, min: 0 })
   parkingFee: number;
 
+  @Prop({ default: 3000, min: 0 })
+  electricityUnitPrice: number;
+
+  @Prop({ default: 20000, min: 0 })
+  waterUnitPrice: number;
+
   // Current tenant info (embedded, not reference)
   @Prop({ type: CurrentTenant, default: null })
   currentTenant?: CurrentTenant;

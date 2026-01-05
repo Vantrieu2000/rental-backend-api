@@ -8,8 +8,8 @@ export class Payment {
   @Prop({ type: Types.ObjectId, ref: 'Room', required: true })
   roomId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Tenant', required: true })
-  tenantId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'Tenant', required: false })
+  tenantId?: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Property', required: true })
   propertyId: Types.ObjectId;
@@ -22,6 +22,12 @@ export class Payment {
 
   @Prop({ required: true })
   dueDate: Date;
+
+  @Prop({ required: true })
+  billingPeriodStart: Date;
+
+  @Prop({ required: true })
+  billingPeriodEnd: Date;
 
   @Prop({ required: true, min: 0 })
   rentalAmount: number;
@@ -62,6 +68,24 @@ export class Payment {
 
   @Prop()
   notes?: string;
+
+  @Prop({ default: 0, min: 0 })
+  electricityUsage: number;
+
+  @Prop({ default: 0, min: 0 })
+  waterUsage: number;
+
+  @Prop({ default: 0, min: 0 })
+  previousElectricityReading: number;
+
+  @Prop({ default: 0, min: 0 })
+  currentElectricityReading: number;
+
+  @Prop({ default: 0, min: 0 })
+  previousWaterReading: number;
+
+  @Prop({ default: 0, min: 0 })
+  currentWaterReading: number;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

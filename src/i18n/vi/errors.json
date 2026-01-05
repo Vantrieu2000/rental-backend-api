@@ -1,0 +1,16 @@
+{
+  "validation": {
+    "invalidInput": "Dữ liệu đầu vào không hợp lệ",
+    "requiredField": "{{field}} là bắt buộc",
+    "invalidFormat": "{{field}} có định dạng không hợp lệ"
+  },
+  "auth": {
+    "invalidCredentials": "Thông tin đăng nhập không hợp lệ",
+    "tokenExpired": "Token đã hết hạn",
+    "unauthorized": "Bạn không có quyền truy cập tài nguyên này"
+  },
+  "database": {
+    "connectionError": "Lỗi kết nối cơ sở dữ liệu",
+    "queryError": "Truy vấn cơ sở dữ liệu thất bại"
+  }
+}

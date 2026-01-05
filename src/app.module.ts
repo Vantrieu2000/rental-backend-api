@@ -1,6 +1,8 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { I18nModule, AcceptLanguageResolver, QueryResolver, HeaderResolver } from 'nestjs-i18n';
+import * as path from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
@@ -14,11 +16,25 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { RemindersModule } from './modules/reminders/reminders.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { TenantPortalModule } from './modules/tenant-portal/tenant-portal.module';
+import { SchedulerModule } from './modules/scheduler/scheduler.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { SanitizationMiddleware } from './common/middleware/sanitization.middleware';
 
 @Module({
   imports: [
     ConfigModule,
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+        new HeaderResolver(['x-custom-lang']),
+      ],
+    }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [AppConfigService],
@@ -61,6 +77,8 @@ import { SanitizationMiddleware } from './common/middleware/sanitization.middlew
     RemindersModule,
     NotificationsModule,
     TenantPortalModule,
+    SchedulerModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -18,10 +18,24 @@ export class TenantPortalService {
   async checkPaymentByPhone(checkPaymentDto: CheckPaymentDto) {
     const { phone } = checkPaymentDto;
 
-    // Find all rooms with matching tenant phone
+    // Normalize phone number to support both formats
+    // If user enters 0901234567, convert to +84901234567
+    // If user enters +84901234567, keep as is
+    const normalizedPhone = phone.startsWith('+84')
+      ? phone
+      : phone.startsWith('0')
+      ? '+84' + phone.substring(1)
+      : '+84' + phone;
+
+    // Also prepare alternative format for search
+    const alternativePhone = normalizedPhone.startsWith('+84')
+      ? '0' + normalizedPhone.substring(3)
+      : normalizedPhone;
+
+    // Find all rooms with matching tenant phone (check both formats)
     const rooms = await this.roomModel
       .find({
-        'currentTenant.phone': phone,
+        'currentTenant.phone': { $in: [normalizedPhone, alternativePhone] },
         status: 'occupied',
       })
       .populate('propertyId')

@@ -59,7 +59,7 @@ export class TenantPortalService {
       }
       acc[roomId].push(payment);
       return acc;
-    }, {} as Record<string, Payment[]>);
+    }, {} as Record<string, PaymentDocument[]>);
 
     // Build response
     const result = rooms.map((room) => {
